@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.omaar.ads_sdk">
+
+    <application>
+        <activity android:name=".model.ImageActivity"></activity>
+        <activity android:name=".view.AdViewActivity" />
+    </application>
+
+</manifest>
