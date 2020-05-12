@@ -3,8 +3,6 @@ package com.omaar.ads_sdk.network
 import android.app.Application
 import android.content.Intent
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.omaar.ads_sdk.model.AdMeta
 import com.omaar.ads_sdk.view.AdViewActivity
 import kotlinx.coroutines.CoroutineScope
@@ -23,16 +21,11 @@ class AdService(private val application: Application, private var token: String)
     private val coroutineScope = CoroutineScope(adServiceJob + Dispatchers.Main)
 
     //a flag to check if ad is loaded or not
-    private val _isAdLoaded = MutableLiveData<Boolean>()
-    val isAdLoaded: LiveData<Boolean>
-        get() = _isAdLoaded
+    private var isAdLoaded : Boolean = false
 
     init {
         //concatenate token with 'Bearer'
         token = "Bearer $token"
-
-        //initialize isAdLoaded flag to false
-        _isAdLoaded.value = false
     }
 
     /**
@@ -46,7 +39,7 @@ class AdService(private val application: Application, private var token: String)
                 //request the new ad
                 _ad = AdMetaApi.retrofitService.requestAdAsync(token)
                 //set isAdLoaded flag to true
-                _isAdLoaded.value = true
+                isAdLoaded = true
             } catch (e: Exception) {
                 //if some error happened log it
                 Log.e("SubwayAdService (REQ)", e.message!!)
@@ -61,7 +54,7 @@ class AdService(private val application: Application, private var token: String)
     fun playAd() {
 
         //first check if the ad is loaded or not
-        if (!isAdLoaded.value!!)
+        if (!isAdLoaded)
             return
 
         //request a new ad
@@ -91,6 +84,13 @@ class AdService(private val application: Application, private var token: String)
      */
     fun cancelJob() {
         adServiceJob.cancel()
+    }
+
+    /**
+     * The method used to check if there is a loaded ad or not
+     */
+    fun isAdReady() : Boolean{
+        return isAdLoaded
     }
 
 }
