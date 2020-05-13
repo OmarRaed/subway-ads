@@ -74,7 +74,8 @@ class AdService(private val application: Application, private var token: String)
         intent.putExtra("BRAND", _ad.brandName)
         intent.putExtra("TYPE", _ad.type)
 
-        //start the ad activity
+        //set ad activity flag and start it
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         application.baseContext.startActivity(intent)
 
     }
