@@ -45,6 +45,16 @@ and whenever you want to show add use call *playAd()* method
 adService.playAd()
 ```
 
+you can add optional listener to trigger when ad is ready
+
+```kotlin
+adService.requestAd(object : AdMetaApiListener {
+    override fun onAdReady() {
+        //ad is ready to be played
+    }
+})
+```
+
 ---
 
 **Don't forget to cancel requesting ads job whenever you Destroy the activity**
