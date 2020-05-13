@@ -3,6 +3,7 @@ package com.omaar.adssdk
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.omaar.ads_sdk.network.AdMetaApiListener
 import com.omaar.ads_sdk.network.AdService
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +28,12 @@ class MainActivity : AppCompatActivity() {
 
         //request ad
         //A new ad is automatically requested whenever you play ad so you only need to call requestAd() once
-        adService.requestAd()
+        adService.requestAd(object : AdMetaApiListener {
+            //optional listener
+            override fun onAdReady() {
+                adService.playAd()
+            }
+        })
 
         //handle play button clicks
         playAdBtn.setOnClickListener {

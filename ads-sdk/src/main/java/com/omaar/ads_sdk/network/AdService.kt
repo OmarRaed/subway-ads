@@ -31,7 +31,13 @@ class AdService(private val application: Application, private var token: String)
     /**
      * The method responsible for requesting a new ad in a new background process (coroutine)
      */
-    fun requestAd() {
+    fun requestAd(adListener : AdMetaApiListener = object : AdMetaApiListener {
+        override fun onAdReady() {
+            // just empty body for onAdReady but initialized here to let the 
+            // listener be an optional parameter when requestAd() is called
+        }
+    }
+    ) {
 
         //launch coroutine
         coroutineScope.launch {
@@ -40,6 +46,8 @@ class AdService(private val application: Application, private var token: String)
                 _ad = AdMetaApi.retrofitService.requestAdAsync(token)
                 //set isAdLoaded flag to true
                 isAdLoaded = true
+                //fire onAdReady() listener method
+                adListener.onAdReady()
             } catch (e: Exception) {
                 //if some error happened log it
                 Log.e("SubwayAdService (REQ)", e.message!!)
