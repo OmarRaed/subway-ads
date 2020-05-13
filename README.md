@@ -19,7 +19,7 @@ allprojects {
 
 Then add this dependency to your **module-level** `build.gradle` in `dependencies` section:
 ```groovy
-implementation 'com.github.OmarRaed:subway-ads:1.1'
+implementation 'com.github.OmarRaed:subway-ads:1.2'
 ```
 
 ---
