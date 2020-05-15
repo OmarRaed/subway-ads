@@ -5,29 +5,21 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.omaar.ads_sdk.R
+import com.omaar.ads_sdk.databinding.ActivityAdViewBinding
 import com.omaar.ads_sdk.network.ClickService
-
 
 internal class AdViewActivity : AppCompatActivity() {
 
-    //declare a lateinit vars for the image and video views
-    private lateinit var videoView: VideoView
-    private lateinit var imageView: ImageView
+    private lateinit var binding: ActivityAdViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ad_view)
-
-        //initialize both image and video views
-        videoView = findViewById(R.id.videoView)
-        imageView = findViewById(R.id.imageView)
+        binding = ActivityAdViewBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         //receive data from intent
         val mediaLink = intent.getStringExtra("MEDIA_LINK")
@@ -45,7 +37,7 @@ internal class AdViewActivity : AppCompatActivity() {
         }
 
         //handle user ad clicks
-        findViewById<LinearLayout>(R.id.clickView).setOnClickListener {
+        binding.clickView.setOnClickListener {
             adClicked(token!!, category!!, brandName!!, adLink!!)
         }
 
@@ -57,16 +49,16 @@ internal class AdViewActivity : AppCompatActivity() {
     private fun showImage(mediaLink: String) {
 
         //set the video view visibility to GONE
-        videoView.visibility = GONE
+        binding.videoView.visibility = GONE
 
         //set the image view visibility to VISIBLE
-        imageView.visibility = VISIBLE
+        binding.imageView.visibility = VISIBLE
 
         //show the image
         Glide.with(this)
             .load(mediaLink)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .into(imageView).apply {
+            .into(binding.imageView).apply {
 
             }
 
@@ -78,14 +70,14 @@ internal class AdViewActivity : AppCompatActivity() {
     private fun playVideo(mediaLink: String) {
 
         //set the image view visibility to GONE
-        imageView.visibility = GONE
+        binding.imageView.visibility = GONE
 
         //set the video view visibility to VISIBLE
-        videoView.visibility = VISIBLE
+        binding.videoView.visibility = VISIBLE
 
         //start playing video
-        videoView.setVideoURI(Uri.parse(mediaLink))
-        videoView.start()
+        binding.videoView.setVideoURI(Uri.parse(mediaLink))
+        binding.videoView.start()
     }
 
     /**
@@ -106,14 +98,14 @@ internal class AdViewActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         //if video is visible pause it
-        if (videoView.visibility == VISIBLE)
-            videoView.pause()
+        if (binding.videoView.visibility == VISIBLE)
+            binding.videoView.pause()
     }
 
     override fun onResume() {
         super.onResume()
         //if video is visible resume it
-        if (videoView.visibility == VISIBLE)
-            videoView.start()
+        if (binding.videoView.visibility == VISIBLE)
+            binding.videoView.start()
     }
 }

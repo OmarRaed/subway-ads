@@ -1,22 +1,23 @@
 package com.omaar.adssdk
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import com.omaar.ads_sdk.network.AdMetaApiListener
 import com.omaar.ads_sdk.network.AdService
+import com.omaar.adssdk.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
 
     //declare a lateinit var that will holds the ad service
     private lateinit var adService: AdService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        //initialize play button
-        val playAdBtn = findViewById<Button>(R.id.playAd)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         //initialize application
         val application = requireNotNull(this).application
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         //handle play button clicks
-        playAdBtn.setOnClickListener {
+        binding.playAd.setOnClickListener {
             //play ad
             adService.playAd()
         }
