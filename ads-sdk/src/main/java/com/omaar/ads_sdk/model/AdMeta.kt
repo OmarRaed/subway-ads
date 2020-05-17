@@ -1,7 +1,9 @@
 package com.omaar.ads_sdk.model
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 internal data class AdMeta(
     @SerializedName("id") val id : String,
     @SerializedName("category") val category : String,
